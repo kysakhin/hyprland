@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# Function to display notification
+show_notification() {
+    notify-send -i multimedia-playback-start "$1"
+}
+
+# To actually pause
+$(playerctl play-pause)
+
+# Main loop
+while true; do
+    # Get the playback status
+    status=$(playerctl status 2>/dev/null)
+
+    # Check if the status is not empty (player is running)
+    if [ -n "$status" ]; then
+        case "$status" in
+            "Playing")
+                # Get metadata
+                artist=$(playerctl metadata artist)
+                title=$(playerctl metadata title)
+		$(dunstify "Now playing: $title by $artist")
+                ;;
+            "Paused")
+	        artist=$(playerctl metadata artist)
+		title=$(playerctl metadata title)
+		$(dunstify "Paused $title by $artist")
+                ;;
+	
+        esac
+    else
+	    break
+    fi
+done
+

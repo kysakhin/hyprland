@@ -1,0 +1,21 @@
+swaylock \
+        --screenshots \
+        --clock \
+        --indicator \
+        --indicator-radius 100 \
+        --indicator-thickness 7 \
+        --effect-blur 7x5 \
+        --effect-vignette 0.5:0.5 \
+        --ring-color ebdbb2 \
+        --key-hl-color 282828 \
+        --line-color 00000000 \
+        --inside-color 00000088 \
+        --separator-color 00000000 \
+        --grace 2 \
+        --fade-in 0.2 \
+        --ring-ver-color 00000088 \
+        --inside-ver-color 00000088 \
+        --text-ver-color ebdbb2 \
+        --font 'JetBrainsMono Nerd Font' \
+        --font-size 24
+                          
