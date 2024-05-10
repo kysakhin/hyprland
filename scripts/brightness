@@ -1,0 +1,7 @@
+#!/bin/bash
+
+val=$(cat /sys/class/backlight/intel_backlight/brightness)
+max=$(cat /sys/class/backlight/intel_backlight/max_brightness)
+per=$(( (val*100)/max ))
+
+echo "$per %"

@@ -1,0 +1,45 @@
+#!/bin/bash
+
+# Check if playerctl is installed
+if ! command -v playerctl &> /dev/null; then
+    echo "Error: playerctl not found. Please install it."
+    exit 1
+fi
+
+# Function to display notification
+show_notification() {
+    notify-send -i multimedia-playback-start -a playerctl "$1"
+}
+
+# Function to get metadata
+get_metadata() {
+    artist=$(playerctl metadata artist)
+    title=$(playerctl metadata title)
+    echo "Now playing: $title by $artist"
+}
+
+# Function to toggle play/pause
+toggle_play_pause() {
+	playerctl play-pause
+}
+
+# Register a D-Bus signal for playback status changes
+playerctl --follow metadata --format "{{status}}: {{playerName}}" | while read -r line; do
+    status=$(echo "$line" | cut -d ':' -f 1)
+    playerName=$(echo "$line" | cut -d ':' -f 2)
+
+    if [ "$status" == "Playing" ]; then
+        current_notification="$(get_metadata)"
+        if [ "$current_notification" != "$previous_notification" ]; then
+            show_notification "$current_notification"
+        fi
+        previous_notification="$current_notification"
+    elif [ "$status" == "Paused" ]; then
+        current_notification="Media is now paused"
+        if [ "$current_notification" != "$previous_notification" ]; then
+            show_notification "$current_notification"
+        fi
+        previous_notification="$current_notification"
+    fi
+done
+

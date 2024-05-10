@@ -1,0 +1,4 @@
+#!/bin/bash
+
+vol=$(amixer sget Master | grep -oP '\d+%' | head -n1)
+echo $vol
